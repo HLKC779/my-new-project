@@ -1,0 +1,35 @@
+FROM python:3.9-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    POETRY_VERSION=1.5.1
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="/root/.local/bin:${PATH}"
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the dependency files first to leverage Docker cache
+COPY pyproject.toml poetry.lock* ./
+
+# Install dependencies including test dependencies
+RUN pip install --no-cache-dir -r requirements-dev.txt
+
+# Copy the rest of the application
+COPY . .
+
+# Command to run tests
+CMD ["pytest", "--cov=app", "--cov-report=term-missing", "-v", "tests/"]

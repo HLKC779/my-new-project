@@ -1,0 +1,100 @@
+# Core
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.1
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+psycopg2-binary==2.9.9  # For PostgreSQL
+aiosqlite==0.19.0  # For SQLite
+
+# Pydantic
+pydantic==2.6.1
+pydantic-settings==2.1.0
+email-validator==2.1.0.post1
+
+# RAG and ML
+sentence-transformers==2.2.2
+chromadb==0.4.22
+langchain==0.1.0
+langchain-community==0.0.20
+langchain-text-splitters==0.0.1
+
+# Optional: For OpenAI integration
+openai==1.12.0
+
+# Optional: For HuggingFace integration
+transformers==4.38.2
+torch==2.2.0
+sentencepiece==0.1.99
+
+# Utils
+tqdm==4.66.1
+python-magic==0.4.27
+python-magic-bin==0.4.14; sys_platform == 'win32'
+
+# Development
+debugpy==1.8.0
+pytest==7.4.4
+httpx==0.26.0
+pytest-asyncio==0.23.5
+pytest-cov==4.1.0
+
+# Documentation
+fastapi-pagination==0.12.2
+
+# Monitoring
+sentry-sdk[fastapi]==1.39.1
+
+# Caching
+redis==5.0.1
+
+# Async
+anyio==4.3.0
+
+# Security
+python-jose[cryptography]==3.3.0
+bcrypt==4.1.2
+
+# File processing
+PyPDF2==3.0.1
+python-docx==1.0.1
+python-pptx==0.6.23
+python-pptx-interface==0.5.5
+
+# Logging
+structlog==23.2.0
+python-json-logger==2.0.7
+
+# Testing
+pytest==7.4.4
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+pytest-asyncio==0.23.5
+httpx==0.26.0
+
+# Formatting
+black==24.1.1
+isort==5.13.2
+flake8==7.0.0
+mypy==1.8.0
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.5.3
+mkdocstrings[python]==0.24.0
+
+# Containerization
+docker==7.0.0
+docker-compose==2.24.5
+
+# Monitoring and Metrics
+prometheus-client==0.19.0
+opentelemetry-api==1.22.0
+opentelemetry-sdk==1.22.0
+opentelemetry-instrumentation-fastapi==0.43b0
+opentelemetry-instrumentation-sqlalchemy==0.43b0

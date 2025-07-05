@@ -1,79 +1,236 @@
-<!-- This is the markdown template for the final project of the Building AI course, 
-created by Reaktor Innovations and University of Helsinki. 
-Copy the template, paste it to your GitHub README and edit! -->
+# RAG System with Authentication and Real-time Chat
 
-# README
+A full-stack Retrieval-Augmented Generation (RAG) system with real-time chat capabilities, built with FastAPI, React, and modern AI technologies.
 
-Final project for the Building AI course
+## Features
 
-## Summary
+- **Real-time Chat**: WebSocket-based chat interface with streaming responses
+- **Document Management**: Upload, index, and manage various document types
+- **Natural Language Search**: Query documents using natural language
+- **Conversation History**: Save and retrieve chat conversations
+- **User Authentication**: Secure JWT-based authentication
+- **Responsive UI**: Modern, mobile-friendly interface
+- **RESTful API**: Fully documented API for integration
 
-Describe briefly in 2-3 sentences what your project is about. About 250 characters is a nice length! 
+## Tech Stack
 
+### Backend
+- **Framework**: FastAPI
+- **Database**: SQLite (production: PostgreSQL)
+- **Vector Store**: ChromaDB
+- **Embeddings**: HuggingFace Sentence Transformers
+- **LLM**: GPT-4 (or other models via OpenAI/HuggingFace)
+- **Authentication**: JWT with OAuth2
+- **Real-time**: WebSockets
 
-## Background
+### Frontend
+- **Framework**: React 18
+- **UI Library**: Material-UI (MUI)
+- **State Management**: React Context API
+- **Routing**: React Router 6
+- **HTTP Client**: Axios
+- **WebSocket**: Native WebSocket API
 
-Which problems does your idea solve? How common or frequent is this problem? What is your personal motivation? Why is this topic important or interesting?
+## Prerequisites
 
-This is how you make a list, if you need one:
-* problem 1
-* problem 2
-* etc.
+- Python 3.9+
+- Node.js 18+
+- npm or yarn
+- Git
+- OpenAI API Key (for GPT models)
 
+## Getting Started
 
-## How is it used?
+### Backend Setup
 
-Describe the process of using the solution. In what kind situations is the solution needed (environment, time, etc.)? Who are the users, what kinds of needs should be taken into account?
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd my-new-project/backend
+   ```
 
-Images will make your README look nice!
-Once you upload an image to your repository, you can link link to it like this (replace the URL with file path, if you've uploaded an image to Github.)
-![Cat](https://upload.wikimedia.org/wikipedia/commons/5/5e/Sleeping_cat_on_her_back.jpg)
+2. Set up the Python virtual environment and install dependencies:
+   ```bash
+   # Create and activate virtual environment
+   python -m venv venv
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   ```
 
-If you need to resize images, you have to use an HTML tag, like this:
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Sleeping_cat_on_her_back.jpg" width="300">
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
 
-This is how you create code examples:
+4. Initialize the database:
+   ```bash
+   # Run database migrations
+   alembic upgrade head
+   
+   # Or create tables directly
+   python -c "from app.db.base import init_db; init_db()"
+   ```
+
+5. Start the backend server:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd ../frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## API Documentation
+
+Once the backend is running, you can access:
+
+- **API Docs**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
+- **ReDoc**: [http://localhost:8000/api/redoc](http://localhost:8000/api/redoc)
+
+## Environment Variables
+
+### Backend (`.env`)
+
+```env
+# Application
+DEBUG=True
+ENVIRONMENT=development
+LOG_LEVEL=INFO
+HOST=0.0.0.0
+PORT=8000
+
+# Database
+DATABASE_URL=sqlite:///./rag_system.db
+
+# Security
+SECRET_KEY=your-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
+
+# RAG Settings
+EMBEDDING_MODEL=sentence-transformers/all-mpnet-base-v2
+CHROMA_DB_PATH=./chroma_db
+LLM_MODEL_NAME=gpt-4
+
+# OpenAI
+OPENAI_API_KEY=your-openai-api-key
+
+# CORS
+BACKEND_CORS_ORIGINS=http://localhost:3000,http://localhost:8000
 ```
-def main():
-   countries = ['Denmark', 'Finland', 'Iceland', 'Norway', 'Sweden']
-   pop = [5615000, 5439000, 324000, 5080000, 9609000]   # not actually needed in this exercise...
-   fishers = [1891, 2652, 3800, 11611, 1757]
 
-   totPop = sum(pop)
-   totFish = sum(fishers)
+## Project Structure
 
-   # write your solution here
-
-   for i in range(len(countries)):
-      print("%s %.2f%%" % (countries[i], 100.0))    # current just prints 100%
-
-main()
+```
+my-new-project/
+├── backend/                    # Backend application
+│   ├── app/
+│   │   ├── api/               # API routes
+│   │   ├── core/              # Core configuration
+│   │   ├── db/                # Database configuration
+│   │   ├── models/            # Database models
+│   │   ├── schemas/           # Pydantic models
+│   │   ├── services/          # Business logic
+│   │   └── main.py            # Application entry point
+│   ├── tests/                 # Backend tests
+│   ├── requirements.txt       # Python dependencies
+│   └── .env                  # Environment variables
+├── frontend/                  # Frontend application
+│   ├── public/               # Static files
+│   ├── src/                  # Source code
+│   │   ├── components/       # Reusable components
+│   │   ├── pages/            # Page components
+│   │   ├── services/         # API services
+│   │   └── App.js            # Main App component
+│   ├── package.json          # Frontend dependencies
+│   └── .env                 # Frontend environment variables
+├── .gitignore
+└── README.md
 ```
 
+## Development
 
-## Data sources and AI methods
-Where does your data come from? Do you collect it yourself or do you use data collected by someone else?
-If you need to use links, here's an example:
-[Twitter API](https://developer.twitter.com/en/docs)
+### Running Tests
 
-| Syntax      | Description |
-| ----------- | ----------- |
-| Header      | Title       |
-| Paragraph   | Text        |
+```bash
+# Backend tests
+cd backend
+pytest
 
-## Challenges
+# Frontend tests
+cd ../frontend
+npm test
+```
 
-What does your project _not_ solve? Which limitations and ethical considerations should be taken into account when deploying a solution like this?
+### Code Formatting
 
-## What next?
+```bash
+# Backend
+black .
+isort .
+flake8 .
 
-How could your project grow and become something even more? What kind of skills, what kind of assistance would you  need to move on? 
+# Frontend
+cd frontend
+npx prettier --write .
+```
 
+## Deployment
 
-## Acknowledgments
+### Docker
 
-* list here the sources of inspiration 
-* do not use code, images, data etc. from others without permission
-* when you have permission to use other people's materials, always mention the original creator and the open source / Creative Commons licence they've used
-  <br>For example: [Sleeping Cat on Her Back by Umberto Salvagnin](https://commons.wikimedia.org/wiki/File:Sleeping_cat_on_her_back.jpg#filelinks) / [CC BY 2.0](https://creativecommons.org/licenses/by/2.0)
-* etc
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+```
+
+### Production
+
+1. Set up a production database (PostgreSQL recommended)
+2. Update environment variables for production
+3. Use a production-grade ASGI server like Gunicorn with Uvicorn workers:
+   ```bash
+   gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
+   ```
+4. Set up a reverse proxy (Nginx, Caddy, etc.)
+5. Configure SSL/TLS
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+Your Name - [@your_twitter](https://twitter.com/your_twitter) - your.email@example.com
+
+Project Link: [https://github.com/yourusername/rag-system](https://github.com/yourusername/rag-system)

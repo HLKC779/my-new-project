@@ -1,0 +1,48 @@
+FROM python:3.9-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.5.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_CACHE_DIR='/var/cache/pypoetry' \
+    PYSETUP_PATH="/opt/pysetup"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    git \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the dependency files first to leverage Docker cache
+COPY pyproject.toml poetry.lock* ./
+
+# Install Python dependencies
+RUN poetry install --no-root --no-interaction --no-ansi
+
+# Copy the rest of the application
+COPY . .
+
+# Install development dependencies
+RUN pip install --no-cache-dir -r requirements-dev.txt
+
+# Expose the port the app runs on
+EXPOSE 8000
+
+# Command to run the application with auto-reload
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
